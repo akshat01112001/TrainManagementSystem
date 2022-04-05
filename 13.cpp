@@ -21,7 +21,7 @@ public:
 	priority_queue<ll> plat;
 }
 
-ll stat_plat[4];
+station stat_plat[4];
 
 void solve()
 {
@@ -32,6 +32,7 @@ void solve()
 		cout<<"Enter train number, source, destination, incoming time and outgoing time: ";
 		cin>>tr.num>>tr.from>>tr.to>>tr.in>>tr.out;
 	}
+	
 	
 
 }
