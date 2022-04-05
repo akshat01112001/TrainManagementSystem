@@ -21,8 +21,18 @@ public:
 	int num;
 }
 
+int stat_plat[12];
+
 void solve()
 {
+	int t;
+	cin>>t;
+	vector<train>v(t);
+	for(auto& tr:v){
+		cout<<"Enter train number, source, destination, incoming time and outgoing time: ";
+		cin>>tr.num>>tr.from>>tr.to>>tr.in>>tr.out;
+	}
+	
 
 }
 
