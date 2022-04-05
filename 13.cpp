@@ -6,7 +6,7 @@ using namespace std;
 //class train and station
 //priority queue for every platform
 //array of 12 size
-
+//delete this later
 class train{
 public:
 	ll num;
