@@ -9,23 +9,23 @@ using namespace std;
 
 class train{
 public:
-	int num;
-	int from;
-	int to;
-	int in;
-	int out;
+	ll num;
+	ll from;
+	ll to;
+	ll in;
+	ll out;
 };
 
 class station{
 public:
-	int num;
+	ll num;
 }
 
-int stat_plat[12];
+ll stat_plat[12];
 
 void solve()
 {
-	int t;
+	ll t;
 	cin>>t;
 	vector<train>v(t);
 	for(auto& tr:v){
