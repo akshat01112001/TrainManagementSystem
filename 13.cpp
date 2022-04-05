@@ -18,10 +18,10 @@ public:
 
 class station{
 public:
-	ll num;
+	priority_queue<ll> plat;
 }
 
-ll stat_plat[12];
+ll stat_plat[4];
 
 void solve()
 {
