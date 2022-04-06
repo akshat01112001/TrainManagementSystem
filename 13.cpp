@@ -9,31 +9,49 @@ using namespace std;
 //delete this later
 class train{
 public:
-	ll num;
 	ll from;
 	ll to;
-	ll in;
-	ll out;
+	ll departure_t;
+	ll arrival_t;
+	ll num;
 };
 
 class station{
 public:
 	priority_queue<ll> plat;
-}
+};
 
-station stat_plat[4];
+station stat_plat[4][4];
 
 void solve()
 {
-	ll t;
+	cout<<"Number of trains: ";
+	ll t,counter=0;
 	cin>>t;
 	vector<train>v(t);
 	for(auto& tr:v){
-		cout<<"Enter train number, source, destination, incoming time and outgoing time: ";
-		cin>>tr.num>>tr.from>>tr.to>>tr.in>>tr.out;
+		cout<<"Enter source, destination, incoming time, outgoing time and train number: ";
+		cin>>tr.from>>tr.to>>tr.departure_t>>tr.arrival_t>>tr.num;
 	}
-	
-	
+	sort(v.begin(),v.end());
+	for(auto& tr:v){
+		ll c=INT_MAX;
+		if(tr.from==tr.to) continue;
+		ll i=1;
+		while(!stat_plat[tr.from][i].empty() && i<5)
+			i++;
+		cout<<i<<
+		if(i==5){
+			for(k=1;k<5;k++){
+				train tra=stat_plat[tr.from][k].front();
+				c=min(c,tra.departure_t);
+				if(c==tra.departure_t) i=k;
+			}
+		}
+		stat_plat[tr.from][i].push(tr.num);
+		counter++;
+		if(counter>=c) stat_plat[tr.from++][i].pop();
+	}
 
 }
 
