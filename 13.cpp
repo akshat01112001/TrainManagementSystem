@@ -124,7 +124,6 @@ void solve()
 	cin>>t;
 	train *tra=new train();
 	vector<train *>v(t, tra);
-	vector<ll>depart_t(t);
 	for(i=0;i<t;i++){
 		cout<<"Enter source, destination, incoming time, outgoing time and train number: ";
 		cin>>from>>to>>departure_t>>arrival_t>>num;
