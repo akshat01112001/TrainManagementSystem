@@ -127,7 +127,6 @@ void solve()
 	for(i=0;i<t;i++){
 		cout<<"Enter source, destination, incoming time, outgoing time and train number: ";
 		cin>>from>>to>>departure_t>>arrival_t>>num;
-		
 		k = (arrival_t-departure_t)/(to - from);
 		// k /= 100;
 		time(k);
