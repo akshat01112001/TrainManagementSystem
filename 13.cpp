@@ -10,11 +10,14 @@ using namespace std;
 class train{
 public:
 	train();
+	train(ll from,ll to,ll departure_t,ll arrival_t,ll num,ll k,bool in_transit);
 	ll from;
 	ll to;
 	ll departure_t;
 	ll arrival_t;
 	ll num;
+	ll k;
+	bool in_transit;
 };
 
 train::train(){
@@ -23,6 +26,18 @@ train::train(){
 	this->departure_t=0;
 	this->arrival_t=0;
 	this->num=0;
+	this->k=0;
+	this->in_transit=true;
+}
+
+train::train(ll from,ll to,ll departure_t,ll arrival_t,ll num,ll k,bool in_transit){
+	this->from=from;
+	this->to=to;
+	this->departure_t=departure_t;
+	this->arrival_t=arrival_t;
+	this->num=num;
+	this->k=k;
+	this->in_transit=in_transit;
 }
 
 class station{
@@ -92,7 +107,7 @@ void time(ll &t){
 	if(t>2359) t-=2400;
 }
 
-void time_updation(ll &t,double k){
+void time_updation(ll &t,ll k){
 	t+=k;
 }
 
@@ -104,23 +119,39 @@ void transit(train *tr,station* stat[],vector<train *>v){
 void solve()
 {
 	cout<<"Number of trains: ";
-	ll t,counter=0,i,j,beg_time=900;
+	ll t,counter=0,i,j,beg_time=900,from,to,departure_t,arrival_t,num,k;
 	station* stat[4];
 	cin>>t;
-	vector<train *>v(t);
-	for(auto& tr:v){
+	train *tra=new train();
+	vector<train *>v(t, tra);
+	vector<ll>depart_t(t);
+	for(i=0;i<t;i++){
 		cout<<"Enter source, destination, incoming time, outgoing time and train number: ";
-		cin>>tr->from>>tr->to>>tr->departure_t>>tr->arrival_t>>tr->num;
+		cin>>from>>to>>departure_t>>arrival_t>>num;
+		
+		k = (arrival_t-departure_t)/(to - from);
+		// k /= 100;
+		time(k);
+		train *tra1=new train(from,to,departure_t,arrival_t,num,k,true);
+		v[i]=tra1;
 	}
 	sort(v.begin(),v.end(),cmp);
+	for(i=0;i<t;i++){
+		cout<<v[i]->from<<" "<<v[i]->to<<" "<<v[i]->departure_t<<" "<<v[i]->arrival_t<<" "<<v[i]->num<<endl;
+	}
 	while(beg_time!=2300){
-		for(auto& tr:v){
-			if(tr->departure_t==beg_time){
-				stat[tr->from]->put_train(tr,v);
-				double k = (tr->arrival_t-tr->departure_t)/(tr->to - tr->from)*1.0;
-				transit(tr,stat,v);
-				stat[tr->from]->readout_train(tr);
-				time_updation(tr->departure_t,k);
+		for(i=0;i<t;i++){
+			if(v[i]->departure_t==beg_time){
+				//stat[v[i]->from]->put_train(v[i],v);
+				// k = 60/(v[i]->to - v[i]->from);
+				// k *= (v[i]->arrival_t-v[i]->departure_t);
+				// k /= 100;
+				//transit(v[i],stat,v);
+				//stat[v[i]->from]->readout_train(v[i]);
+				time_updation(v[i]->departure_t,v[i]->k);
+				time(v[i]->departure_t);
+				if(v[i]->in_transit) cout<<v[i]->departure_t<<" "<<v[i]->num<<" "<<v[i]->from<<" "<<v[i]->to<<endl;
+				if(v[i]->departure_t>=v[i]->arrival_t) v[i]->in_transit=false;
 			}
 			// if(tr->arrival_t==beg_time){
 			// 	transit
@@ -129,7 +160,7 @@ void solve()
 		// for(auto& tr:v){
 
 		// }
-		time_updation(beg_time,30);
+		time_updation(beg_time,10);
 		time(beg_time);
 	}
 }
