@@ -74,29 +74,40 @@ bool cmp(train * a,train * b) {
 //make current time dynamic for transit using while loop
 
 void station::put_train(train* input,vector<train *>v){
-	for(ll i=0;i<4;i++){
-		if(plat[i]->num==0){
-			plat[i]=input;
-			break;
-		}
-	}
+	// for(ll i=0;i<4;i++){
+	// 	if(plat[i]->num==0){
+	// 		plat[i]=;             //to fimd empty platform
+	// 		return;
+	// 	}
+	// }
+
 	for(auto& tr:v){
 		ll i=0;
-		while(!plat[i]->num && i<4) i++;
-		plat[i]=tr;
-		if(i==4) wait_q.push(tr);
+		while(plat[i]->num && i<4) i++;       //is there any platform empty?? else go next
+		if(i<4){
+			plat[i]=tr;
+			return; 
+		}
+		if(i==4) wait_q.push(tr);             // all platforms were full!! put in waiting list
+		           
 	}
+
 	ll depart=INT_MAX;
+
 	for(ll j=0;j<4;j++){
 		if(plat[j]->num)
-			depart=min(depart,plat[j]->departure_t);
+			depart=min(depart,plat[j]->departure_t);   // this loop find minimum departure time
 	}
+
 	for(ll j=0;j<4;j++){
 		if(depart==plat[j]->departure_t){
-			plat[j]=wait_q.front();
-			wait_q.pop();
+			plat[j]=wait_q.front();                      //this one finds which platform had minimum departure 
+			wait_q.pop();							 // and then puts first waiting list train at that spot
+			return;
 		}
 	}
+
+	return;
 }
 
 void time(ll &t){
@@ -140,10 +151,8 @@ void solve()
 	while(beg_time!=2300){
 		for(i=0;i<t;i++){
 			if(v[i]->departure_t==beg_time){
-				//stat[v[i]->from]->put_train(v[i],v);
-				// k = 60/(v[i]->to - v[i]->from);
-				// k *= (v[i]->arrival_t-v[i]->departure_t);
-				// k /= 100;
+				stat[v[i]->from]->put_train(v[i],v);
+				
 				//transit(v[i],stat,v);
 				//stat[v[i]->from]->readout_train(v[i]);
 				time_updation(v[i]->departure_t,v[i]->k);
