@@ -42,29 +42,36 @@ train::train(ll from,ll to,ll departure_t,ll arrival_t,ll num,ll k,bool in_trans
 
 class station{
 public:
-	void readout_train(train *input);
-	void remove_train(train *input);
+	station();
+	//void readout_train(train *input);
+	//void remove_train(train *input);
 	//void put_train(train *input,vector<train *>v);
 	queue<train *>wait_q;
 	train* plat[4];
+	ll u;
 };
 
-void station::readout_train(train *input){
+station::station(){
+	this->u=0;
+}
+
+void readout_train(train *input,station *st){
 	for(int i = 0; i < 4; i++){
-        if(plat[i]->from == 0){
+        if(st->plat[i]->from){
             //this->trains[i]=input;
-            cout<< "Train "<<this->plat[i]->num<<" is entering platform no "<<i + 1<<" at "<<this->plat[i]->arrival_t<<" and should leave at "<<this->plat[i]->departure_t<<endl;
+            cout<< "Train "<<st->plat[i]->num<<" is entering platform no "<<i + 1<<" at "<<st->plat[i]->departure_t<<" at station "<<input->from<<endl;
         }
     }
 }
 
-void station::remove_train(train *input){
+void remove_train(train *input,station *st){
 	for(int i = 0; i < 4; i++){
-        if(plat[i]==input){
-            cout<<"Train "<<this->plat[i]->num<<" is exiting platform "<<i+1<<" at "<<this->plat[i]->departure_t<<endl;
-            plat[i]->from=plat[i]->to=plat[i]->departure_t=plat[i]->arrival_t=plat[i]->num=0;
+        if(st->plat[i]==input){
+            cout<<"Train "<<st->plat[i]->num<<" is exiting platform "<<i+1<<" at "<<st->plat[i]->departure_t<<" at station "<<input->from<<endl;
+            st->plat[i]->from=st->plat[i]->to=st->plat[i]->departure_t=st->plat[i]->arrival_t=st->plat[i]->num=0;
         }
     }
+    input->from++;
 }
 
 bool cmp(train * a,train * b) {
@@ -74,7 +81,7 @@ bool cmp(train * a,train * b) {
 //make current time dynamic for transit using while loop
 
 void put_train(train* input,station *v){
-	cout<<input->num<<" xyz ";
+	// cout<<input->num<<" xyz ";
 	// for(ll i=0;i<4;i++){
 	// 	if(plat[i]->num==0){
 	// 		plat[i]=;             //to fimd empty platform
@@ -82,10 +89,9 @@ void put_train(train* input,station *v){
 	// 	}
 	// }
 	for(ll i=0;i<4;i++){       //is there any platform empty?? else go next
-	cout<<"entered this loop"<<endl;
 		if(v->plat[i]->num==0){
 			v->plat[i]=input;
-			cout<<i<<endl;
+			if(v->plat[i]->num) readout_train(input,v);
 			return;
 		}
 		v->wait_q.push(input);             // all platforms were full!! put in waiting list
@@ -122,11 +128,14 @@ void time_updation(ll &t,ll k){
 	t+=k;
 }
 
-// void transit(train *tr,station* stat[],vector<train *>v){
-// 	stat[tr->from++]->remove_train(tr);
-// 	if(tr->from<4) put_train(tr,v);
-// }
-
+void transit(train *tr,station *st[]){     //**DOUBTFUL!!!
+	remove_train(tr,st[tr->from-1]);
+	cout<<tr->from<<endl;
+	
+	
+	if(tr->from<5) put_train(tr,st[tr->from-1]);
+}
+// Find a way to make sure that put train function is called for every stationn outside a loop.
 void solve()
 {
 	//cout<<"Number of trains: ";
@@ -135,6 +144,12 @@ void solve()
 	cin>>t;
 	train *tra=new train();
 	vector<train *>v(t, tra);
+	for(i=0;i<4;i++){
+		stat[i]=new station();
+		for(j=0;j<4;j++){
+			stat[i]->plat[j]=new train();
+		}
+	}
 	for(i=0;i<t;i++){
 		//cout<<"Enter source, destination, incoming time, outgoing time and train number: ";
 		cin>>from>>to>>departure_t>>arrival_t>>num;
@@ -146,21 +161,20 @@ void solve()
 	}
 	cout<<endl;
 	sort(v.begin(),v.end(),cmp);
-	for(i=0;i<t;i++){
-		cout<<v[i]->from<<" "<<v[i]->to<<" "<<v[i]->departure_t<<" "<<v[i]->arrival_t<<" "<<v[i]->num<<endl;
-	}
+	
+	put_train(v[0],stat[v[0]->from-1]);
+	
 	cout<<endl;
 	while(beg_time!=2300){
 		for(i=0;i<t;i++){
 			if(v[i]->departure_t==beg_time){
-				put_train(v[i],stat[v[i]->from]);
 				
-				//transit(v[i],stat,v);
+				transit(v[i],stat);
 				//stat[v[i]->from]->readout_train(v[i]);
 				time_updation(v[i]->departure_t,v[i]->k);
 				time(v[i]->departure_t);
 				for(ll j=0;j<4;j++){
-					if(v[i]->in_transit) cout<<v[i]->departure_t<<" "<<v[i]->num<<" "<<v[i]->from<<" "<<v[i]->to<<" "<<stat[v[i]->from]->plat[j]->num<<endl;
+					if(v[i]->in_transit && stat[v[i]->from-1]->plat[j]->num>0) cout<<v[i]->departure_t<<" "<<v[i]->num<<" "<<v[i]->from<<" "<<v[i]->to<<" "<<j+1<<endl;
 					if(v[i]->departure_t>=v[i]->arrival_t) v[i]->in_transit=false;
 				}
 				
