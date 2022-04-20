@@ -145,7 +145,7 @@ void transit(train *tr,station *st[]){
 		put_train(tr,st[tr->from-1]);
 	}
 }
-oop.
+
 void solve()
 {
 	//cout<<"Number of trains: ";
