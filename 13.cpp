@@ -72,15 +72,20 @@ void readout_train(train *input,station *st){
 }
 
  void remove_train(train *input,station *st){
+ 	// cout<<input->num<<" he he bhaiya"<<endl;
 	train *in=new train(input->from,input->to,input->departure_t,input->arrival_t,input->num,input->k,input->in_transit,input->givplat,input->platn,input->cnt);
-	for(int i = 0; i < 4; i++){
-        if(st->plat[i]==input){
+	for(ll i = 0; i < 4; i++){
+		// cout<<input->num<<" is getting in deep"<<endl;
+		// cout<<st->plat[i]->num<<" double"<<endl;
+        if(st->plat[i]->num==input->num){
+        	// cout<<input->num<<" is deepeer"<<endl;
             cout<<"Train "<<st->plat[i]->num<<" is exiting platform "<<i+1<<" at "<<st->plat[i]->departure_t<<" at station "<<input->from<<endl;
             st->plat[i]->from=st->plat[i]->to=st->plat[i]->departure_t=st->plat[i]->arrival_t=st->plat[i]->num=0;
-            in->givplat=false;
+            input->givplat=false;
+            break;
         }
     }
-    input=in;
+     
     
 }
 
@@ -124,7 +129,21 @@ void put_train(train *input,station *v, ll beg_time){
 		if(v->plat[j]->num)
 			depart=min(depart,v->plat[j]->departure_t);   // this loop find minimum departure time
 	}
-	
+	// for(ll i=0;i<4;i++){       //is there any platform empty?? else go next
+	// 	if(v->plat[i]->num==-1){
+	// 		v->plat[i]=v->wait_q.front();
+	// 		input->givplat=true;
+	// 		input->platn=i+1;
+	// 		v->wait_q.pop();
+	//  		k=rebound(j);
+	//  		k++;								 // and then puts first waiting list train at that spot
+	// 		break;
+	// 		//cout<<v->plat[i]->num<<" "<<endl;
+			
+	// 	}
+	// 	             // all platforms were full!! put in waiting list
+	// }
+
 	for(ll j=k;j<4;j++){
 		if(depart==v->plat[j]->departure_t){
 			remove_train(v->plat[j],v); 	
@@ -166,7 +185,8 @@ bool checkVal(ll trnum,queue<train *>wait_q){
 
 
 void transit(train *tr,station *st[],ll beg_time){   
-		remove_train(tr,st[tr->from]);
+	
+		remove_train(tr,st[tr->from-1]);
 		if(tr->from<5){
 		put_train(tr,st[tr->from++],beg_time);
 	}
@@ -206,7 +226,7 @@ void solve()
 
 	}
 	while(beg_time!=2300){
-		// if(beg_time==1500) cout<<"jhgdehcrwch"<<endl;
+		
 		for(i=0;i<t;i++){
 			//if(beg_time==1500) cout<<"time 1500 hai and train checking loop is for "<<v[i]->departure_t<<endl;
 			if(v[i]->departure_t==beg_time){
@@ -215,7 +235,10 @@ void solve()
 					put_train(v[i],stat[v[i]->from-1],beg_time);
 					v[i]->cnt++;
 				}
-				else transit(v[i],stat,beg_time);
+				else{
+					transit(v[i],stat,beg_time);
+				}	
+				// } 
 			
 				for(ll j=0;j<4;j++){
 					if(v[i]->in_transit && stat[v[i]->from-1]->plat[j]->num!=0 && v[i]->givplat){
