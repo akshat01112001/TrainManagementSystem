@@ -53,7 +53,14 @@ public:
 };
 
 ll k=0;
-
+ll  time_out(ll time){
+	ll j=time%100;
+	time-=j;
+	j*=60;
+	j/=100;
+	time+=j;
+	return time;
+}
 ll rebound(ll &j){
 	return (j<4?j:0);
 }
@@ -79,7 +86,7 @@ void readout_train(train *input,station *st){
 		// cout<<st->plat[i]->num<<" double"<<endl;
         if(st->plat[i]->num==input->num){
         	// cout<<input->num<<" is deepeer"<<endl;
-            cout<<"Train "<<st->plat[i]->num<<" is exiting platform "<<i+1<<" at "<<st->plat[i]->departure_t<<" at station "<<input->from<<endl;
+            cout<<"Train "<<st->plat[i]->num<<" is exiting platform "<<i+1<<" at "<<time_out(st->plat[i]->departure_t)<<" at station "<<input->from<<endl;
             st->plat[i]->from=st->plat[i]->to=st->plat[i]->departure_t=st->plat[i]->arrival_t=st->plat[i]->num=0;
             input->givplat=false;
             break;
@@ -89,14 +96,7 @@ void readout_train(train *input,station *st){
     
 }
 
-ll  time_out(ll time){
-	ll j=time%100;
-	time-=j;
-	j*=60;
-	j/=100;
-	time+=j;
-	return time;
-}
+
 
 void time_updation(ll &t,ll k){
 	t+=k;
