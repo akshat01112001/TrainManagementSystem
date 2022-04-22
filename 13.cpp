@@ -53,14 +53,7 @@ public:
 };
 
 ll k=0;
-ll  time_out(ll time){
-	ll j=time%100;
-	time-=j;
-	j*=60;
-	j/=100;
-	time+=j;
-	return time;
-}
+
 ll rebound(ll &j){
 	return (j<4?j:0);
 }
