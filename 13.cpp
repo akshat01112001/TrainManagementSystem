@@ -266,7 +266,7 @@ void solve()
 				
 			
 				for(ll j=0;j<4;j++){
-					if(v[i]->in_transit && stat[v[i]->from-1]->plat[j]->num!=0 && v[i]->givplat && !checkVal(v[i]->num,stat[v[i]->from-1]->wait_q)){
+					if(v[i]->in_transit && stat[v[i]->from-1]->plat[j]->num!=0 && v[i]->givplat){
 						
 						cout<<v[i]->num<<" ";
 						// time_out(v[i]->departure_t);
