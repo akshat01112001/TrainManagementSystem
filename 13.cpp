@@ -83,7 +83,7 @@ void remove_train(train *input,station *st){
 	train *in=new train(input->from,input->to,input->departure_t,input->arrival_t,input->num,input->k,input->in_transit,input->givplat,input->platn,input->cnt);
 	for(int i = 0; i < 4; i++){
         if(st->plat[i]==input){
-            //cout<<"Train "<<st->plat[i]->num<<" is exiting platform "<<i+1<<" at "<<st->plat[i]->departure_t<<" at station "<<input->from<<endl;
+            cout<<"Train "<<st->plat[i]->num<<" is exiting platform "<<i+1<<" at "<<st->plat[i]->departure_t<<" at station "<<input->from<<endl;
             st->plat[i]->from=st->plat[i]->to=st->plat[i]->departure_t=st->plat[i]->arrival_t=st->plat[i]->num=0;
             in->givplat=false;
         }
@@ -146,7 +146,7 @@ void put_train(train *input,station *&v, ll beg_time){
 			
 			
 			// v->wait_q.front()->departure_t=depart;
-			 												// update departure time due to delay
+			remove_train(v->plat[j],v); 												// update departure time due to delay
 			v->plat[j]=v->wait_q.front();
 
 			input->platn=j+1;  
