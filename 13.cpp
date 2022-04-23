@@ -72,20 +72,12 @@ station::station(){
 	this->u=0;
 }
 
-void readout_train(train *input,station *st){
-	for(ll i = 0; i < 4; i++){
-        if(st->plat[i]->from){
-            st->plat[i]=input;
-            cout<< "Train "<<st->plat[i]->num<<" is entering platform no "<<input->platn<<" at "<<time_out(st->plat[i]->departure_t)<<" at station "<<input->from<<endl;
-        }
-    }
-}
-
 void remove_train(train *input,station *st){
 	train *in=new train(input->from,input->to,input->departure_t,input->arrival_t,input->num,input->k,input->in_transit,input->givplat,input->platn,input->cnt);
 	for(ll i = 0; i < 4; i++){
-        if(st->plat[i]->num==input->num){
-            cout<<"Train "<<st->plat[i]->num<<" is exiting platform "<<i+1<<" at "<<time_out(st->plat[i]->departure_t)<<" at station "<<input->from<<endl;
+        if(st->plat[i]->num==input->num && input->from!=input->to){
+            cout<<"Train "<<st->plat[i]->num<<" is exiting platform "<<i+1<<" at "<<time_out(st->plat[i]->departure_t)<<" at station "<<input->from<<endl<<endl;
+
             st->plat[i]->from=st->plat[i]->to=st->plat[i]->departure_t=st->plat[i]->arrival_t=st->plat[i]->num=0;
             input->givplat=false;
             break;
@@ -98,7 +90,8 @@ void time_updation(ll &t,ll k){
 }
 
 bool cmp(train *a,train *b) {
-	return a->departure_t < b->departure_t;
+	if(a->departure_t!=b->departure_t) return a->departure_t < b->departure_t;
+	return a->num < b->num;
 }
 
 
@@ -205,14 +198,15 @@ void solve()
 			
 				for(ll j=0;j<4;j++){
 					if(v[i]->in_transit && stat[v[i]->from-1]->plat[j]->num!=0 && v[i]->givplat)
-						cout<<"Train "<<v[i]->num<<" is entering platform "<<v[i]->platn <<" at "<<time_out(v[i]->departure_t)<<" at station "<<v[i]->from<<" "<<endl;
+						cout<<"Train "<<v[i]->num<<" is entering platform "<<v[i]->platn <<" at "<<time_out(v[i]->departure_t)<<" at station "<<v[i]->from<<" "<<endl<<endl;
 					if(v[i]->departure_t>=v[i]->arrival_t) v[i]->in_transit=false;
 					break;
 				}
 			
 				if(v[i]->to==v[i]->from){
-					cout<<"Train "<<v[i]->num<<" has reached its destination at platform "<<v[i]->platn <<" at "<<time_out(v[i]->departure_t)<<" at station "<<v[i]->from<<endl<<"It has now been transferred to the yard"<<endl;
-					v[i]=new train();
+					cout<<"Train "<<v[i]->num<<" has reached its destination at platform "<<v[i]->platn <<" at "<<time_out(v[i]->departure_t)<<" at station "<<v[i]->from<<endl;
+					v[i]=new train(0,0,0,0,0,0,false,false,0,0);
+					cout<<"It has now been transferred to the yard"<<endl<<endl;
 				}
 
 				time_updation(v[i]->departure_t,v[i]->k);
