@@ -136,7 +136,7 @@ void transit(train *tr,station *st[],ll beg_time){
 
 void solve()
 {
-	ll t,counter=0,i,j,beg_time=900,from,to,departure_t,arrival_t,num,k;
+	ll t,i,j,beg_time=900,from,to,departure_t,arrival_t,num,k;
 	station* stat[4];
 	train *tra=new train();
 
