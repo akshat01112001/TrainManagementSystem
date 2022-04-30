@@ -1,0 +1,4 @@
+# TrainManagementSystem
+![image](https://user-images.githubusercontent.com/72607313/166103919-15a24c5b-92e1-49ef-81c1-338bf1da94bd.png)
+
+Since the era of Steam-engine locomotive driven trains to now electric rake-based trains, the management of the system of trains has been a hurdle, especially in peak hours. With the advent of automation, all thanks to programming, we have ushered into the age of automated train-station management system. This reduces the payload of the controllers who manage the traffic in their control room, and eases the burden on locomotive drivers and driverless trains as there will be no human-to-human interaction and traffic control would be smooth and efficient with controllers monitoring the real-time traffic at their respective screens. Thiw would also enhance the situational awareness of both drivers and controllers.
