@@ -168,9 +168,8 @@ void solve()
 
 	for(i=0;i<4;i++){
 		stat[i]=new station();
-		for(j=0;j<4;j++){
+		for(j=0;j<4;j++)
 			stat[i]->plat[j]=new train();
-		}
 	}
 
 	for(i=0;i<t;i++){
