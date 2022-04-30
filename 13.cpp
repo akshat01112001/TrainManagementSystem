@@ -47,10 +47,8 @@ train::train(ll from,ll to,ll departure_t,ll arrival_t,ll num,ll k,bool in_trans
 
 class station{
 public:
-	station();
 	queue<train *>wait_q;
 	train* plat[4];
-	ll u;
 };
 
 ll k=0;
@@ -66,10 +64,6 @@ ll  time_out(ll time){
 
 ll rebound(ll &j){
 	return (j<4?j:0);
-}
-
-station::station(){
-	this->u=0;
 }
 
 void remove_train(train *input,station *st){
@@ -93,7 +87,6 @@ bool cmp(train *a,train *b) {
 	if(a->departure_t!=b->departure_t) return a->departure_t < b->departure_t;
 	return a->num < b->num;
 }
-
 
 void put_train(train *input,station *v, ll beg_time){
 	train *in=new train(input->from,input->to,input->departure_t,input->arrival_t,input->num,input->k,input->in_transit,input->givplat,input->platn,input->cnt);
@@ -136,19 +129,6 @@ void time(ll &t){
 	}	
 }
 
-bool checkVal(ll trnum,queue<train *>wait_q){
-	cout<<"we tried checking for "<<trnum<<endl;
-	queue<train *> temp=wait_q;
-	while(!temp.empty()){
-		if(trnum==temp.front()->num) {
-			cout<<"did find "<<trnum<<endl;
-			return true;
-		}
-		temp.pop();
-	}
-	return false;
-}
-
 void transit(train *tr,station *st[],ll beg_time){
 	remove_train(tr,st[tr->from-1]);
 	if(tr->from<5) put_train(tr,st[tr->from++],beg_time);
@@ -163,7 +143,6 @@ void solve()
 	cout<<"Number of trains: ";
 	cin>>t;
 
-	ll tempD[t];
 	vector<train *>v(t, tra);
 
 	for(i=0;i<4;i++){
@@ -182,9 +161,6 @@ void solve()
 	}
 	
 	sort(v.begin(),v.end(),cmp);
-
-	for(i=0;i<t;i++)
-		tempD[i]=v[i]->departure_t;
 
 	while(beg_time!=2300){
 		for(i=0;i<t;i++){
@@ -216,7 +192,6 @@ void solve()
 		time_updation(beg_time,10);
 		time(beg_time);
 	}
-
 }
 
 int main()
