@@ -53,7 +53,7 @@ public:
 
 ll k=0;
 
-ll  time_out(ll time){
+ll time_out(ll time){
 	ll j=time%100;
 	time-=j;
 	j*=60;
