@@ -3,6 +3,8 @@
 
 using namespace std;
 
+ll k=0;
+
 class train{
 public:
 	train();
@@ -51,8 +53,6 @@ public:
 	train* plat[4];
 };
 
-ll k=0;
-
 ll time_out(ll time){
 	ll j=time%100;
 	time-=j;
@@ -71,7 +71,6 @@ void remove_train(train *input,station *st){
 	for(ll i = 0; i < 4; i++){
         if(st->plat[i]->num==input->num && input->from!=input->to){
             cout<<"Train "<<st->plat[i]->num<<" is exiting platform "<<i+1<<" at "<<time_out(st->plat[i]->departure_t)<<" at station "<<input->from<<endl<<endl;
-
             st->plat[i]->from=st->plat[i]->to=st->plat[i]->departure_t=st->plat[i]->arrival_t=st->plat[i]->num=0;
             input->givplat=false;
             break;
@@ -83,7 +82,7 @@ void time_updation(ll &t,ll k){
 	t+=k;
 }
 
-bool cmp(train *a,train *b) {
+bool cmp(train *a,train *b){
 	if(a->departure_t!=b->departure_t) return a->departure_t < b->departure_t;
 	return a->num < b->num;
 }
@@ -134,8 +133,8 @@ void transit(train *tr,station *st[],ll beg_time){
 	if(tr->from<5) put_train(tr,st[tr->from++],beg_time);
 }
 
-void solve()
-{
+void solve(){
+
 	ll t,i,j,beg_time=900,from,to,departure_t,arrival_t,num,k;
 	station* stat[4];
 	train *tra=new train();
